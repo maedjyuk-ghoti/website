@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-celtic-cream text-celtic-dark font-sans selection:bg-celtic-gold selection:text-celtic-dark;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0e1d15;
+}
+::-webkit-scrollbar-thumb {
+  background: #23533c;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c89d52;
+}
