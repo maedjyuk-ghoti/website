@@ -37,7 +37,7 @@ export default function Navbar() {
         {/* Brand Logo & Name */}
         <a href="#home" className="flex items-center gap-3 group">
           <img
-            src="/website/celtic_causeway-logo.png"
+            src="/celtic_causeway-logo-no_background.png"
             alt="Celtic Causeway Logo"
             className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-[0_2px_4px_rgba(200,157,82,0.3)]"
           />
