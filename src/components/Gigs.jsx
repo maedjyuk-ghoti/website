@@ -130,6 +130,9 @@ export default function Gigs() {
   const [gigs, setGigs] = useState(OFFICIAL_CALENDAR_EVENTS);
   const [loading, setLoading] = useState(true);
   const [synced, setSynced] = useState(false);
+  const [pageAccessedAt] = useState(() => new Date());
+  const pastGigs = gigs.filter((gig) => gig.rawDate < pageAccessedAt);
+  const upcomingGigs = gigs.filter((gig) => gig.rawDate >= pageAccessedAt);
 
   useEffect(() => {
     let isMounted = true;
@@ -234,59 +237,69 @@ export default function Gigs() {
 
         {/* Content Tabs */}
         {activeTab === 'list' ? (
-          <div className="space-y-4 max-w-4xl mx-auto">
-            {gigs.map((gig) => (
-              <div
-                key={gig.id}
-                className="bg-celtic-green/40 backdrop-blur-md rounded-2xl p-6 border border-celtic-gold/20 hover:border-celtic-gold/60 transition-all duration-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 group hover:bg-celtic-green/60"
-              >
-                {/* Date Badge */}
-                <div className="flex items-center gap-4 min-w-[140px]">
-                  <div className="bg-celtic-dark border border-celtic-gold/40 rounded-xl p-3 text-center min-w-[80px] shadow-inner group-hover:border-celtic-gold transition-colors">
-                    <span className="block text-xs font-bold text-celtic-gold uppercase tracking-wider">
-                      {gig.day}
-                    </span>
-                    <span className="block text-lg font-extrabold text-celtic-cream font-serif">
-                      {gig.date.split(' ')[0]} {gig.date.split(' ')[1] ? gig.date.split(' ')[1].replace(',', '') : ''}
-                    </span>
-                  </div>
-                </div>
+          <div className="space-y-10 max-w-4xl mx-auto">
+            {[
+              { title: 'Upcoming Events', events: upcomingGigs, icon: CalendarIcon, status: 'Upcoming' },
+              { title: 'Past Events', events: pastGigs, icon: AlertCircle, status: 'Past' },
+            ].map(({ title, events, icon: SectionIcon, status }) => (
+              events.length > 0 && (
+                <div key={title} className="space-y-4">
+                  <h3 className="flex items-center gap-2 text-lg font-bold uppercase tracking-widest text-celtic-gold">
+                    <SectionIcon size={18} />
+                    {title}
+                  </h3>
+                  {events.map((gig) => (
+                    <div
+                      key={gig.id}
+                      className="bg-celtic-green/40 backdrop-blur-md rounded-2xl p-6 border border-celtic-gold/20 hover:border-celtic-gold/60 transition-all duration-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 group hover:bg-celtic-green/60"
+                    >
+                      <div className="flex items-center gap-4 min-w-[140px]">
+                        <div className="bg-celtic-dark border border-celtic-gold/40 rounded-xl p-3 text-center min-w-[80px] shadow-inner group-hover:border-celtic-gold transition-colors">
+                          <span className="block text-xs font-bold text-celtic-gold uppercase tracking-wider">
+                            {gig.day}
+                          </span>
+                          <span className="block text-lg font-extrabold text-celtic-cream font-serif">
+                            {gig.date.split(' ')[0]} {gig.date.split(' ')[1] ? gig.date.split(' ')[1].replace(',', '') : ''}
+                          </span>
+                        </div>
+                      </div>
 
-                {/* Event Details */}
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-xl font-bold text-celtic-cream group-hover:text-celtic-gold transition-colors">
-                      {gig.title}
-                    </h3>
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider bg-celtic-gold/20 text-celtic-gold border border-celtic-gold/30">
-                      {gig.status}
-                    </span>
-                  </div>
-                  <p className="text-sm text-celtic-sand/90 font-sans mb-3">
-                    {gig.description}
-                  </p>
-                  <div className="flex flex-wrap items-center gap-4 text-xs text-celtic-sand/80">
-                    <span className="flex items-center gap-1.5 text-celtic-gold font-medium">
-                      <MapPin size={14} />
-                      {gig.venue} ({gig.location})
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <Clock size={14} className="text-celtic-gold" />
-                      {gig.time}
-                    </span>
-                  </div>
-                </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="text-xl font-bold text-celtic-cream group-hover:text-celtic-gold transition-colors">
+                            {gig.title}
+                          </h4>
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider bg-celtic-gold/20 text-celtic-gold border border-celtic-gold/30">
+                            {status}
+                          </span>
+                        </div>
+                        <p className="text-sm text-celtic-sand/90 font-sans mb-3">
+                          {gig.description}
+                        </p>
+                        <div className="flex flex-wrap items-center gap-4 text-xs text-celtic-sand/80">
+                          <span className="flex items-center gap-1.5 text-celtic-gold font-medium">
+                            <MapPin size={14} />
+                            {gig.venue} ({gig.location})
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <Clock size={14} className="text-celtic-gold" />
+                            {gig.time}
+                          </span>
+                        </div>
+                      </div>
 
-                {/* Action CTA */}
-                <div className="w-full md:w-auto flex justify-end pt-2 md:pt-0">
-                  <a
-                    href={gig.ticketUrl}
-                    className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-celtic-gold hover:bg-celtic-goldHover text-celtic-dark font-bold text-xs uppercase tracking-wider rounded-lg shadow transition-all duration-200"
-                  >
-                    Ticket Info / Inquire
-                  </a>
+                      <div className="w-full md:w-auto flex justify-end pt-2 md:pt-0">
+                        <a
+                          href={gig.ticketUrl}
+                          className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-celtic-gold hover:bg-celtic-goldHover text-celtic-dark font-bold text-xs uppercase tracking-wider rounded-lg shadow transition-all duration-200"
+                        >
+                          Ticket Info / Inquire
+                        </a>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
+              )
             ))}
           </div>
         ) : (
