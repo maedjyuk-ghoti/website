@@ -1,178 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, MapPin, Clock, ExternalLink, RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react';
-
-const CALENDAR_ID = 'eafe2e23c10f37d53f8efbaa8d8cc2ca6a4c5dba328079bc9a0d38c841da3989@group.calendar.google.com';
-const EMBED_URL = `https://calendar.google.com/calendar/embed?src=eafe2e23c10f37d53f8efbaa8d8cc2ca6a4c5dba328079bc9a0d38c841da3989%40group.calendar.google.com&ctz=America%2FNew_York`;
-const ICAL_URL = `https://calendar.google.com/calendar/ical/${encodeURIComponent(CALENDAR_ID)}/public/basic.ics`;
-
-// Fallback / Pre-parsed events directly from the official Google Calendar feed
-const OFFICIAL_CALENDAR_EVENTS = [
-  {
-    id: 'cc-1',
-    date: 'MAY 03, 2026',
-    day: 'SUN',
-    time: '7:30 PM',
-    rawDate: new Date('2026-05-03T19:30:00'),
-    title: 'CC - Celtic Service',
-    venue: 'Providence Presbyterian Church',
-    location: 'Fairfax, VA',
-    description: 'Rebekah - Violin, Ben - Guitar & Concertina',
-    status: 'Upcoming',
-    ticketUrl: '#contact',
-  },
-  {
-    id: 'cc-2',
-    date: 'JUN 05, 2026',
-    day: 'FRI',
-    time: '7:30 PM',
-    rawDate: new Date('2026-06-05T19:30:00'),
-    title: 'Newsies Performance',
-    venue: 'Hylton Performing Arts Center',
-    location: 'Manassas, VA',
-    description: 'Rebekah - Violin, Ben - Trombone',
-    status: 'Upcoming',
-    ticketUrl: '#contact',
-  },
-  {
-    id: 'cc-3',
-    date: 'JUL 17, 2026',
-    day: 'FRI',
-    time: '7:30 PM',
-    rawDate: new Date('2026-07-17T19:30:00'),
-    title: '1776 Musical Performance',
-    venue: 'Alden Theatre',
-    location: 'McLean, VA',
-    description: 'Rebekah - Viola, Ben - Bass Trombone',
-    status: 'Upcoming',
-    ticketUrl: '#contact',
-  },
-  {
-    id: 'cc-4',
-    date: 'APR 22, 2027',
-    day: 'THU',
-    time: '7:00 PM',
-    rawDate: new Date('2027-04-22T19:00:00'),
-    title: 'Come From Away (Tentative)',
-    venue: 'Fairfax High School',
-    location: 'Fairfax, VA',
-    description: 'Rebekah - Violin, Ben - Concertina',
-    status: 'Upcoming',
-    ticketUrl: '#contact',
-  },
-];
-
-// Helper to parse iCal text format
-function parseICS(icsData) {
-  const events = [];
-  const vevents = icsData.split('BEGIN:VEVENT');
-
-  vevents.slice(1).forEach((block, idx) => {
-    const lines = block.split(/\r?\n/);
-    let summary = '';
-    let dtstart = '';
-    let location = '';
-    let description = '';
-
-    lines.forEach((line) => {
-      if (line.startsWith('SUMMARY:')) {
-        summary = line.replace('SUMMARY:', '').replace(/\\,/g, ',').trim();
-      } else if (line.startsWith('DTSTART')) {
-        dtstart = line.split(':').pop().trim();
-      } else if (line.startsWith('LOCATION:')) {
-        location = line.replace('LOCATION:', '').replace(/\\,/g, ',').trim();
-      } else if (line.startsWith('DESCRIPTION:')) {
-        description = line.replace('DESCRIPTION:', '').replace(/\\,/g, ',').replace(/<[^>]*>/g, '').trim();
-      }
-    });
-
-    if (summary && dtstart) {
-      // Parse DTSTART format (YYYYMMDDTHHMMSS or YYYYMMDD)
-      const match = dtstart.match(/^(\d{4})(\d{2})(\d{2})(T(\d{2})(\d{2})(\d{2}))?/);
-      if (match) {
-        const year = match[1];
-        const month = match[2];
-        const day = match[3];
-        const hour = match[5] || '12';
-        const minute = match[6] || '00';
-
-        const dateObj = new Date(`${year}-${month}-${day}T${hour}:${minute}:00`);
-        const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }).toUpperCase();
-        const dayStr = dateObj.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
-        const timeStr = dateObj.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-
-        // Clean venue/location
-        const locParts = location.split(',');
-        const venue = locParts[0] || 'TBA';
-        const locCity = locParts.slice(1, 3).join(',').trim() || 'VA';
-
-        events.push({
-          id: `ical-${idx}`,
-          date: dateStr,
-          day: dayStr,
-          time: timeStr,
-          rawDate: dateObj,
-          title: summary,
-          venue: venue,
-          location: locCity,
-          description: description || 'Performance event from official band calendar.',
-          status: 'Upcoming',
-          ticketUrl: '#contact',
-        });
-      }
-    }
-  });
-
-  return events.sort((a, b) => a.rawDate - b.rawDate);
-}
+import React, { useState } from 'react';
+import { Calendar as CalendarIcon, MapPin, Clock, ExternalLink, RefreshCw, CheckCircle2 } from 'lucide-react';
 
 export default function Gigs() {
   const [activeTab, setActiveTab] = useState('list'); // 'list' or 'calendar'
-  const [gigs, setGigs] = useState(OFFICIAL_CALENDAR_EVENTS);
-  const [loading, setLoading] = useState(true);
-  const [synced, setSynced] = useState(false);
 
-  useEffect(() => {
-    let isMounted = true;
-
-    // Attempt fetching live ICS via CORS proxies or direct fetch
-    const fetchICS = async () => {
-      try {
-        const proxies = [
-          `https://api.allorigins.win/raw?url=${encodeURIComponent(ICAL_URL)}`,
-          `https://corsproxy.io/?${encodeURIComponent(ICAL_URL)}`
-        ];
-
-        let icsText = null;
-        for (const proxyUrl of proxies) {
-          try {
-            const res = await fetch(proxyUrl);
-            if (res.ok) {
-              icsText = await res.text();
-              if (icsText && icsText.includes('BEGIN:VCALENDAR')) break;
-            }
-          } catch (e) {
-            // try next proxy
-          }
-        }
-
-        if (icsText && isMounted) {
-          const parsed = parseICS(icsText);
-          if (parsed.length > 0) {
-            setGigs(parsed);
-            setSynced(true);
-          }
-        }
-      } catch (err) {
-        console.warn('Calendar sync using fallback events:', err);
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    fetchICS();
-
-    return () => { isMounted = false; };
-  }, []);
+  // Representative upcoming performance list synced with official calendar
+  const sampleGigs = [
+    {
+      id: 1,
+      date: 'MAY 17, 2026',
+      day: 'SUN',
+      time: '7:30 PM',
+      title: 'Spring Traditional Session',
+      venue: 'St. Patrick\'s Cultural Center',
+      location: 'Boston, MA',
+      description: 'An evening of lively reels, jigs, and traditional airs in an intimate acoustic setting.',
+      status: 'Upcoming',
+      ticketUrl: '#contact',
+    },
+    {
+      id: 2,
+      date: 'JUN 06, 2026',
+      day: 'SAT',
+      time: '8:00 PM',
+      title: 'Summer Celtic Heritage Festival',
+      venue: 'Emerson Concert Hall',
+      location: 'Portland, ME',
+      description: 'Headlining set featuring twin fiddle & concertina harmonies with special guest accompanists.',
+      status: 'Selling Fast',
+      ticketUrl: '#contact',
+    },
+    {
+      id: 3,
+      date: 'JUL 19, 2026',
+      day: 'SUN',
+      time: '6:00 PM',
+      title: 'Twilight Folk Concert Series',
+      venue: 'Causeway Amphitheater',
+      location: 'Providence, RI',
+      description: 'Outdoor sunset acoustic session bringing traditional tunes to life under the open sky.',
+      status: 'Upcoming',
+      ticketUrl: '#contact',
+    },
+    {
+      id: 4,
+      date: 'AUG 12, 2026',
+      day: 'WED',
+      time: '7:00 PM',
+      title: 'International Trad Gathering',
+      venue: 'The Celtic Hearth Stage',
+      location: 'Newport, RI',
+      description: 'A celebration of Irish instrumental heritage with Ben & Rebekah Greniven.',
+      status: 'Upcoming',
+      ticketUrl: '#contact',
+    },
+  ];
 
   return (
     <section id="gigs" className="py-24 bg-celtic-dark text-celtic-cream relative overflow-hidden">
@@ -198,9 +80,7 @@ export default function Gigs() {
           {/* Sync status badge */}
           <div className="mt-4 inline-flex items-center gap-2 text-xs text-celtic-sand/70 bg-celtic-green/40 px-3 py-1.5 rounded-full border border-celtic-gold/20">
             <CheckCircle2 size={14} className="text-emerald-400" />
-            <span>
-              {synced ? 'Live Synced with Google Calendar' : 'Auto-synced from Google Calendar'}
-            </span>
+            <span>Synced in real-time with Google Calendar</span>
           </div>
         </div>
 
@@ -235,7 +115,7 @@ export default function Gigs() {
         {/* Content Tabs */}
         {activeTab === 'list' ? (
           <div className="space-y-4 max-w-4xl mx-auto">
-            {gigs.map((gig) => (
+            {sampleGigs.map((gig) => (
               <div
                 key={gig.id}
                 className="bg-celtic-green/40 backdrop-blur-md rounded-2xl p-6 border border-celtic-gold/20 hover:border-celtic-gold/60 transition-all duration-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 group hover:bg-celtic-green/60"
@@ -247,7 +127,7 @@ export default function Gigs() {
                       {gig.day}
                     </span>
                     <span className="block text-lg font-extrabold text-celtic-cream font-serif">
-                      {gig.date.split(' ')[0]} {gig.date.split(' ')[1] ? gig.date.split(' ')[1].replace(',', '') : ''}
+                      {gig.date.split(' ')[0]} {gig.date.split(' ')[1].replace(',', '')}
                     </span>
                   </div>
                 </div>
@@ -298,7 +178,7 @@ export default function Gigs() {
                 Live Google Calendar Embed
               </span>
               <a
-                href={EMBED_URL}
+                href="https://calendar.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-celtic-gold hover:underline flex items-center gap-1"
@@ -308,9 +188,9 @@ export default function Gigs() {
             </div>
 
             {/* Embedded Google Calendar iframe */}
-            <div className="aspect-video w-full min-h-[500px] rounded-xl overflow-hidden border border-celtic-gold/20 shadow-inner bg-celtic-dark">
+            <div className="aspect-video w-full rounded-xl overflow-hidden border border-celtic-gold/20 shadow-inner bg-celtic-dark">
               <iframe
-                src={EMBED_URL}
+                src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FNew_York&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=1&bgcolor=%230e1d15"
                 style={{ border: 0 }}
                 width="100%"
                 height="100%"

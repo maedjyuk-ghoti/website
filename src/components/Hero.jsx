@@ -22,7 +22,7 @@ export default function Hero() {
           <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-celtic-gold via-celtic-emerald to-celtic-gold opacity-50 blur-lg group-hover:opacity-80 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
           <div className="relative bg-celtic-dark/80 p-4 rounded-2xl border border-celtic-gold/30 shadow-2xl backdrop-blur-sm">
             <img
-              src="/celtic_causeway-logo-no_background.png"
+              src="/website/celtic_causeway-logo.png"
               alt="Celtic Causeway Emblem"
               className="w-44 sm:w-56 md:w-64 h-auto mx-auto object-contain filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]"
             />
