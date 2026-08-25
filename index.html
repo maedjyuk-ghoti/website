@@ -2,7 +2,8 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/celtic_causeway-logo-no_background.png" />
+    <!-- Use Vite's %BASE_URL% so built assets resolve correctly when the site is served from a subpath (GitHub Pages) -->
+    <link rel="icon" type="image/png" href="%BASE_URL%celtic_causeway-logo-no_background.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Celtic Causeway | Instrumental Irish Traditional Music</title>
     <meta name="description" content="Celtic Causeway - Authentic instrumental Irish traditional music featuring Ben Greniven (guitar & concertina) and Rebekah Greniven (fiddle)." />
@@ -13,6 +14,7 @@
   </head>
   <body class="bg-celtic-cream text-celtic-dark antialiased font-sans">
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <!-- make the module import base-aware so Vite can rewrite it to the configured `base` on build -->
+    <script type="module" src="%BASE_URL%src/main.jsx"></script>
   </body>
 </html>
