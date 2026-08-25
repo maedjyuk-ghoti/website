@@ -2,6 +2,9 @@ import React from 'react';
 import { Music, Heart } from 'lucide-react';
 
 export default function Footer() {
+  // Use Vite's BASE_URL at runtime so the image path respects the configured base (e.g. "/website/")
+  const logoSrc = import.meta.env.BASE_URL + 'celtic_causeway-logo-no_background.png';
+
   return (
     <footer className="bg-celtic-dark text-celtic-cream border-t border-celtic-gold/20 py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -10,7 +13,7 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="flex items-center gap-4">
             <img
-              src="/celtic_causeway-logo-no_background.png"
+              src={logoSrc}
               alt="Celtic Causeway Logo"
               className="h-12 w-auto object-contain filter drop-shadow-[0_2px_4px_rgba(200,157,82,0.3)]"
             />
