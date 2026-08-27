@@ -9,27 +9,27 @@ const ICAL_URL = `https://calendar.google.com/calendar/ical/${encodeURIComponent
 const OFFICIAL_CALENDAR_EVENTS = [
   {
     id: 'cc-1',
-    date: 'MAY 03, 2026',
-    day: 'SUN',
-    time: '7:30 PM',
-    rawDate: new Date('2026-05-03T19:30:00'),
-    title: 'CC - Celtic Service',
-    venue: 'Providence Presbyterian Church',
-    location: 'Fairfax, VA',
-    description: 'Rebekah - Violin, Ben - Guitar & Concertina',
+    date: 'SEP 03, 2026',
+    day: 'THU',
+    time: '6:30 PM',
+    rawDate: new Date('2026-09-03T18:30:00'),
+    title: 'IBB - First Thursday',
+    venue: 'Del Ray, VA',
+    location: 'Del Ray, VA',
+    description: 'Ben - Concertina w/the Irish Breakfast Band',
     status: 'Upcoming',
     ticketUrl: '#contact',
   },
   {
     id: 'cc-2',
-    date: 'JUN 05, 2026',
-    day: 'FRI',
-    time: '7:30 PM',
-    rawDate: new Date('2026-06-05T19:30:00'),
-    title: 'Newsies Performance',
-    venue: 'Hylton Performing Arts Center',
-    location: 'Manassas, VA',
-    description: 'Rebekah - Violin, Ben - Trombone',
+    date: 'OCT 03, 2026',
+    day: 'SAT',
+    time: '12:00 PM',
+    rawDate: new Date('2026-10-03T12:00:00'),
+    title: 'IBB - Art on the Avenue',
+    venue: 'Del Ray, VA',
+    location: 'Del Ray, VA',
+    description: 'Rebekah - Fiddle, Ben - Concertina',
     status: 'Upcoming',
     ticketUrl: '#contact',
   },
@@ -43,7 +43,7 @@ const OFFICIAL_CALENDAR_EVENTS = [
     venue: 'Alden Theatre',
     location: 'McLean, VA',
     description: 'Rebekah - Viola, Ben - Bass Trombone',
-    status: 'Upcoming',
+    status: 'Past',
     ticketUrl: '#contact',
   },
   {
@@ -55,7 +55,7 @@ const OFFICIAL_CALENDAR_EVENTS = [
     title: 'Come From Away (Tentative)',
     venue: 'Fairfax High School',
     location: 'Fairfax, VA',
-    description: 'Rebekah - Violin, Ben - Concertina',
+    description: 'Rebekah - Fiddle, Ben - Concertina',
     status: 'Upcoming',
     ticketUrl: '#contact',
   },
@@ -195,7 +195,7 @@ export default function Gigs() {
           </h2>
           <div className="w-24 h-1 bg-celtic-gold mx-auto mb-6 rounded-full"></div>
           <p className="text-base sm:text-lg text-celtic-sand/80 font-sans leading-relaxed">
-            Experience the raw energy and intricate beauty of instrumental Irish traditional music live in concert.
+            Experience the raw energy and intricate beauty of Irish traditional music live in concert.
           </p>
 
           {/* Sync status badge */}
