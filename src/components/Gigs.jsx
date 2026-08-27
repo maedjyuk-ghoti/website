@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, MapPin, Clock, ExternalLink, RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react';
 
-const CALENDAR_ID = 'eafe2e23c10f37d53f8efbaa8d8cc2ca6a4c5dba328079bc9a0d38c841da3989@group.calendar.google.com';
-const EMBED_URL = `https://calendar.google.com/calendar/embed?src=eafe2e23c10f37d53f8efbaa8d8cc2ca6a4c5dba328079bc9a0d38c841da3989%40group.calendar.google.com&ctz=America%2FNew_York`;
+const CALENDAR_ID = '97eed1655333f6651cbe5b5877a4c7282dbf016ffd100d0ce8f0281c0bb3826a@group.calendar.google.com';
+const EMBED_URL = `https://calendar.google.com/calendar/embed?src=97eed1655333f6651cbe5b5877a4c7282dbf016ffd100d0ce8f0281c0bb3826a%40group.calendar.google.com&ctz=America%2FNew_York`;
 const ICAL_URL = `https://calendar.google.com/calendar/ical/${encodeURIComponent(CALENDAR_ID)}/public/basic.ics`;
 
 // Fallback / Pre-parsed events directly from the official Google Calendar feed
