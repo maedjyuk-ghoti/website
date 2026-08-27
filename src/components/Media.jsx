@@ -4,17 +4,17 @@ import { Video, Play, Music, Radio, Volume2 } from 'lucide-react';
 export default function Media() {
   const [selectedVideo, setSelectedVideo] = useState({
     id: 'bZYpOPPh1X4',
-    title: 'Celtic Causeway - Live Instrumental Session',
-    description: 'Featured performance showcasing authentic traditional Irish instrumental tune sets.',
+    title: 'Celtic Causeway - Live Instrumental Set',
+    description: 'Featured performance showcasing authentic traditional Irish tune sets.',
   });
 
   const videoList = [
     {
       id: 'bZYpOPPh1X4',
-      title: 'Celtic Causeway - Live Instrumental Set',
+      title: 'Celtic Causeway - Olympus Mons, Time will End',
       duration: '4:15',
-      category: 'Featured Performance',
-      description: 'An uplifting set of jigs and reels featuring concertina, guitar, and fiddle.',
+      category: 'Live Performance',
+      description: 'An set of slip jigs and reels featuring fiddle, guitar, piano and percussion.',
       thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80',
     },
     {
