@@ -4,35 +4,33 @@ import { Video, Play, Music, Radio, Volume2 } from 'lucide-react';
 export default function Media() {
   const [selectedVideo, setSelectedVideo] = useState({
     id: 'bZYpOPPh1X4',
-    title: 'Celtic Causeway - Live Instrumental Set',
-    description: 'Featured performance showcasing authentic traditional Irish tune sets.',
+    title: 'Celtic Causeway - Olympus Mons, Time will End',
+    description: 'An set of slip jigs and reels featuring fiddle, guitar, piano and percussion.',
   });
 
   const videoList = [
     {
       id: 'bZYpOPPh1X4',
-      title: 'Celtic Causeway - Olympus Mons, Time will End',
+      title: 'Fish Shop - Olympus Mons, Time will End',
       duration: '4:15',
       category: 'Live Performance',
       description: 'An set of slip jigs and reels featuring fiddle, guitar, piano and percussion.',
       thumbnail: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80',
     },
     {
-      id: 'Placeholder_1',
-      isPlaceholder: true,
-      title: 'Reels from Clare & Galway',
-      duration: '5:30',
-      category: 'Stage Performance',
-      description: 'Ben and Rebekah performing driving Irish reels at the Summer Folk Festival.',
+      id: '7CuA8VE3-U0',
+      title: 'Fish Shop - Fox Hunter\'s, Maudabawn Chapel, Far From Home',
+      duration: '6:41',
+      category: 'Live Performance',
+      description: 'Ben and Rebekah performing a driving set of Irish slip jigs and reels at the Fish Shop.',
       thumbnail: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80',
     },
     {
-      id: 'Placeholder_2',
-      isPlaceholder: true,
-      title: 'Slow Air & Hornpipe Medley',
-      duration: '6:10',
+      id: 'KBlAN40ROs4',
+      title: 'Fish Shop - Ballinamore, Horseshoes & Rainbows',
+      duration: '3:09',
       category: 'Acoustic Studio Session',
-      description: 'Intimate acoustic session featuring soulful fiddle airs transitioning into lively hornpipes.',
+      description: 'Ben and Rebekah performing a set of Irish reels with friends at the Fish Shop.',
       thumbnail: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=600&q=80',
     },
   ];
