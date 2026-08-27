@@ -32,7 +32,7 @@ export default function Hero() {
         {/* Tagline Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-celtic-green/60 border border-celtic-gold/40 text-celtic-gold text-xs sm:text-sm font-medium uppercase tracking-widest mb-4 shadow-inner">
           <Radio size={14} className="animate-pulse text-celtic-gold" />
-          <span>Authentic Instrumental Traditional Irish Music</span>
+          <span>Authentic Traditional Irish Music</span>
         </div>
 
         {/* Main Title */}
@@ -42,7 +42,7 @@ export default function Hero() {
 
         {/* Subtitle / Description */}
         <p className="max-w-2xl text-base sm:text-lg md:text-xl text-celtic-sand/90 font-sans leading-relaxed mb-8">
-          Captivating melodies and rhythmic mastery featuring <span className="text-celtic-cream font-semibold">Ben Greniven</span> on Guitar & Concertina and <span className="text-celtic-cream font-semibold">Rebekah Greniven</span> on Fiddle.
+          Captivating melodies and rhythmic mastery featuring <span className="text-celtic-cream font-semibold">Rebekah Greniven</span> on Fiddle & Voice and <span className="text-celtic-cream font-semibold">Ben Greniven</span> on Guitar & Concertina.
         </p>
 
         {/* Call to Action Buttons */}
