@@ -10,7 +10,7 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="flex items-center gap-4">
             <img
-              src="/celtic_causeway-logo-no_background.png"
+              src="/celtic_causeway-logo.png"
               alt="Celtic Causeway Logo"
               className="h-12 w-auto object-contain filter drop-shadow-[0_2px_4px_rgba(200,157,82,0.3)]"
             />
@@ -19,7 +19,7 @@ export default function Footer() {
                 CELTIC CAUSEWAY
               </span>
               <span className="text-xs text-celtic-gold tracking-widest uppercase block">
-                Instrumental Irish Traditional Music
+                Irish Traditional Music
               </span>
             </div>
           </div>
