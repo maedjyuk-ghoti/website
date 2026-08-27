@@ -96,7 +96,7 @@ export default function Contact() {
                       Based In
                     </span>
                     <span className="text-base text-celtic-sand">
-                      Available for regional, national & international performances.
+                      Fairfax, VA
                     </span>
                   </div>
                 </div>
@@ -113,7 +113,7 @@ export default function Contact() {
                 Join Our Newsletter
               </h3>
               <p className="text-sm text-celtic-sand/80 font-sans mb-6 leading-relaxed">
-                Subscribe to get early notifications on tour announcements, new video releases, and album updates.
+                Subscribe to get early notifications on gig announcements, new video releases, and album updates.
               </p>
 
               {newsletterSubmitted ? (
