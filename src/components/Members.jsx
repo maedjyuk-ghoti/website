@@ -4,17 +4,17 @@ import { Music, Disc, Sparkles } from 'lucide-react';
 export default function Members() {
   const members = [
     {
+      name: 'Rebekah Greniven',
+      role: 'Fiddle & Voice',
+      bio: 'Rebekah\'s fiddle playing embodies the soul and energy of traditional Irish music. Known for her expressive phrasing, crisp bowing technique, and infectious ornamentation, she weaves intricate reels, jigs, and slow airs with effortless elegance.',
+      instruments: ['Fiddle / Violin', 'Voice'],
+      iconColor: 'from-amber-700/30 to-emerald-950',
+    },
+    {
       name: 'Ben Greniven',
       role: 'Guitar & Concertina',
       bio: 'Ben brings dynamic driving rhythms and expressive melodic sensitivity to Celtic Causeway. With a deep passion for traditional tunes, his rhythmic guitar backings and intricate concertina ornamentation lay down the heart and groove of the duo\'s signature sound.',
       instruments: ['Acoustic Guitar', 'Anglo Concertina'],
-      iconColor: 'from-amber-700/30 to-emerald-950',
-    },
-    {
-      name: 'Rebekah Greniven',
-      role: 'Fiddle',
-      bio: 'Rebekah\'s fiddle playing embodies the soul and energy of traditional Irish music. Known for her expressive phrasing, crisp bowing technique, and infectious ornamentation, she weaves intricate reels, jigs, and slow airs with effortless elegance.',
-      instruments: ['Fiddle / Violin'],
       iconColor: 'from-emerald-800/30 to-emerald-950',
     },
   ];
@@ -34,7 +34,7 @@ export default function Members() {
           </h2>
           <div className="w-24 h-1 bg-celtic-gold mx-auto mb-6 rounded-full"></div>
           <p className="text-base sm:text-lg text-celtic-slate font-sans leading-relaxed">
-            Rooted in tradition and crafted with passion, Celtic Causeway brings together the rich sounds of fiddle, concertina, and guitar for unforgettable instrumental performances.
+            Rooted in tradition and crafted with passion, Celtic Causeway brings together the rich sounds of fiddle, concertina, voice, and guitar for unforgettable performances.
           </p>
         </div>
 
