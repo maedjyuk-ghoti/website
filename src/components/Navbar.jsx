@@ -46,7 +46,7 @@ export default function Navbar() {
               CELTIC CAUSEWAY
             </span>
             <span className="text-[10px] sm:text-xs tracking-widest text-celtic-gold uppercase font-sans">
-              Instrumental Irish Tradition
+              Irish Traditional Music
             </span>
           </div>
         </a>
