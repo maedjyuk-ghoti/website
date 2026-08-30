@@ -1,0 +1,99 @@
+name: Visual Testing - Take Screenshots
+
+on:
+  push:
+    branches:
+      - main
+      - improve/**
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Build with Vite
+        run: npm run build
+
+      - name: Start preview server
+        run: |
+          npm run preview > /tmp/preview.log 2>&1 &
+          sleep 3
+          # Wait for server to be ready
+          for i in {1..30}; do
+            if curl -s http://localhost:5173 > /dev/null; then
+              echo "Server is ready"
+              break
+            fi
+            echo "Waiting for server... ($i/30)"
+            sleep 1
+          done
+        env:
+          HOST: localhost
+          PORT: 5173
+
+      - name: Take screenshots
+        run: npm run screenshots
+        env:
+          BASE_URL: http://localhost:5173
+
+      - name: Upload screenshots as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-${{ github.run_id }}
+          path: screenshots/
+          retention-days: 30
+
+      - name: Create screenshot summary
+        if: always()
+        run: |
+          echo "## 📸 Visual Testing Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Screenshots have been generated for the following viewports:" >> $GITHUB_STEP_SUMMARY
+          echo "- Desktop (1280x720)" >> $GITHUB_STEP_SUMMARY
+          echo "- Tablet (768x1024)" >> $GITHUB_STEP_SUMMARY
+          echo "- Mobile (375x812)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Download the screenshots from the artifacts to review changes." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -d "screenshots" ]; then
+            echo "### Screenshots Generated:" >> $GITHUB_STEP_SUMMARY
+            ls -1 screenshots/ | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Comment PR with screenshot info
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 📸 Visual Testing Complete\n\nScreenshots have been generated for desktop, tablet, and mobile viewports. Download the artifacts to review how your changes look across different screen sizes.\n\n**Viewports tested:**\n- Desktop (1280×720)\n- Tablet (768×1024)\n- Mobile (375×812)\n\nCheck the "Artifacts" section in the workflow run to download screenshots.`
+            })
